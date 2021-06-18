@@ -4,7 +4,7 @@
   "description": "Contains backend code for the Gas & Me application",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,8 +17,6 @@
     "express": "^4.17.1",
     "express-validator": "^6.12.0",
     "jsonwebtoken": "^8.5.1",
-    "localtunnel": "^2.0.1",
     "mongoose": "^5.12.13",
-    "validator": "^13.6.0"
   }
 }
