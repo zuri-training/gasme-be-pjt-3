@@ -1,10 +1,10 @@
 // setup db, PORT and config settings
-require('dotenv').config();
+const connectDB = require('./db/index');
 
-const PORT = process.env.PORT || 5000;
+require('dotenv').config();
 
 const app = require('./app');
 
-app.listen(PORT, () => {
-    console.log(`App running on port: ${PORT}...`)
-});
+connectDB(app);
+
+

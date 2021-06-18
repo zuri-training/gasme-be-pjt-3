@@ -1,6 +1,6 @@
 const multer = require('multer');
 const sharp = require('sharp');
-const User = require('./../models/userModel')
+const User = require('../models/user')
 
 /* Handle Image uplaod and resizing */
 
