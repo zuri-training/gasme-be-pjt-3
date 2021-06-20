@@ -43,7 +43,7 @@ const options = {
             }
         ]
     },
-    apis: ["./routes/*.js"]
+    apis: ["./docs/*.js"]
 }
 
 // Generate swagger specifications

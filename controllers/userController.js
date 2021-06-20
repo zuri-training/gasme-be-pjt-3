@@ -79,7 +79,7 @@ exports.getUser = async (req, res) => {
     const doc = await User.findById(req.params.id)
 
     if (!doc) {
-        return res.status(400).json({
+        return res.status(404).json({
             status: 'fail',
             message: 'User not found!'
         })
