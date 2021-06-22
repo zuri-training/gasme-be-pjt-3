@@ -9,7 +9,25 @@
  *          content:
  *              application/json:
  *                  schema:
- *                      $ref: '#/components/schemas/User'
+ *                      type: object
+ *                      properties:
+ *                          email:
+ *                              type: string
+ *                              example: "johndoe@email.com"
+ *                              description: the user's email
+ *                          password:
+ *                              type: string
+ *                              example: "a very SeCuRe PaSsWoRd"
+ *                              description: the user's password
+ *                          fullName:
+ *                              type: string
+ *                              example: "John Doe"
+ *                              description: the user's full name
+ *                          phoneNumber:
+ *                              type: number
+ *                              example: 2349023456789
+ *                              description: the user's phone number
+ *                          
  *      responses:
  *          201:
  *              description: The user was signed up successfully
@@ -28,14 +46,23 @@
  * @swagger
  * /auth/login:
  *  post:
- *      summary: Signup user
+ *      summary: Login user
  *      tags: [Auth]
  *      requestBody:
  *          required: true
  *          content:
  *              application/json:
  *                  schema:
- *                      $ref: '#/components/schemas/User'
+ *                      type: object
+ *                      properties:
+ *                          email:
+ *                              type: string
+ *                              example: "johndoe@email.com"
+ *                              description: the user's email
+ *                          password:
+ *                              type: string
+ *                              example: "a very SeCuRe PaSsWoRd"
+ *                              description: the user's password
  *      responses:
  *          201:
  *              description: The user was logged in successfully

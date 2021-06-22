@@ -11,8 +11,8 @@ const {requireLogin} = require('../middleware/auth');
 const router = Router();
 
 router.post('/create', requireLogin, validate('createVendor'), createVendor);
-router.get('/get', getVendors);
-router.post('/update', requireLogin,  updateVendor);
+router.post('/get', getVendors);
+router.put('/update', requireLogin,  updateVendor);
 router.get('/:id', getVendorById);
 
 module.exports = router;

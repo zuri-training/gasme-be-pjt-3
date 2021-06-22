@@ -1,6 +1,12 @@
 const multer = require('multer');
 const sharp = require('sharp');
-const User = require('../models/user')
+const User = require('../models/user');
+const {filterObj} = require('../utils/util');
+const {
+    resNotFound,
+    resInternalError,
+    resSuccess
+} = require('../utils/custom_responses');
 
 /* Handle Image uplaod and resizing */
 
@@ -42,55 +48,41 @@ exports.resizeUserPhoto = async (req, res, next) => {
 
 
 // Filter unwanted fields
-const filterObj = (obj, ...allowedFields) => {
-    const newObj = {}
-    Object.keys(obj).forEach(el => {
-        if (allowedFields.includes(el)) newObj[el] = obj[el]
-    })
-    return newObj
-};
 
 
-exports.updateUser = async (req, res, next) => {
+
+exports.updateUser = async (req, res) => {
     try {
         // Filter out unwanted fields names that are not allowed to be updated
-        const filteredBody = filterObj(req.body, 'fullName', 'email', 'phoneNumber')
-        if (req.file) filteredBody.photo = req.file.filename
+        const filteredBody = filterObj(req.body, 'fullName', 'phoneNumber', 'location')
+        if (req.file) filteredBody.photo = req.file.filename;
     
         // Update user document
-        const updatedUser = await User.findByIdAndUpdate(req.params.id, filteredBody, {
+        const updatedUser = await User.findByIdAndUpdate(req.userId, filteredBody, {
             new: true,
             runValidators: true
         });
-    
-        res.status(200).json({
-            status: 'success',
-            data: {
-                user: updatedUser
-            }
-        });
+        if (!updatedUser) return resNotFound(res, 'User not found');
+        
+        return resSuccess(res, 200, {updatedUser});
     } catch (err) {
-
+        return resInternalError(res);
     }
 }
 
 
 exports.getUser = async (req, res) => {
-    const doc = await User.findById(req.params.id)
+    
+    try {
+        const doc = await User.findById(req.params.id)
 
-    if (!doc) {
-        return res.status(404).json({
-            status: 'fail',
-            message: 'User not found!'
-        })
+        if (!doc) return resNotFound(res, 'User not found!')
+
+        return resSuccess(res, 200, {user: doc});
+    } catch (error) {
+        return resInternalError(res);
     }
-
-    res.status(200).json({
-        status: 'success',
-        data: {
-            data: doc
-        }
-    })
+    
 }
 
 

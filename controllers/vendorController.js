@@ -6,10 +6,7 @@ const {
     resSuccess,
     resInvalidRequest,
     resNotFound,
-    resUnauthorized
-} = require('../utils/util');
-
-const {isOwner} = require('../utils/auth');
+} = require('../utils/custom_responses');
 
 
 
@@ -47,7 +44,7 @@ module.exports.createVendor = async (req, res) => {
 // Get all vendors that match filter specs
 module.exports.getVendors = async (req, res) => {
 
-    // Filter by name, deliveryEnabled, volumeRange, location
+    // Filter by vendorName, deliveryEnabled, volumeRange, location
     try {
         const vendors = await Vendor.find(req.body);
 
@@ -63,6 +60,7 @@ module.exports.getVendorById = async (req, res) => {
 
     try {
         const vendor = await Vendor.findById(req.params.id);
+        if (!vendor) return resNotFound(res);
         
         return resSuccess(res, 200, {vendor});
     } catch(error) {
@@ -73,11 +71,6 @@ module.exports.getVendorById = async (req, res) => {
 
 // Update specific vendor by ID
 module.exports.updateVendor = async (req, res) => {
-    
-    const errors = validationResult(req);
-
-    // Validate data
-    if (!errors.isEmpty()) return resInvalidRequest(res, errors);
 
     try {
         // Check if logged in user has a vendor object to update

@@ -1,68 +1,12 @@
-const jwt = require('jsonwebtoken');
-const SECRET = process.env.SECRET;
-
-const maxAge = 3 * 24 * 3600;
-
-// Creates a jwt token from user id, email and fullName
-module.exports.createToken = (id, email, fullName) => {
-    return jwt.sign({id, email, fullName}, SECRET, {
-        expiresIn: maxAge
-    });
-}
 
 
-// Returns a status 400 response
-module.exports.resBadRequest = (res, message) => {
-    return res.status(400).json({
-       error: true,
-       message
-   })
-}
 
-// Returns a status 400 response for invalid data
-module.exports.resInvalidRequest = (res, errors) => {
-    return res.status(400).json({
-        error: true,
-        message: 'invalid request',
-        data: errors
-    });
-}
 
-// Returns a status 401 response 
-module.exports.resUnauthorized = (res, message='unauthorized') => {
-    return res.status(401).json({
-        error: true,
-        message
+// Filters out unwanted fields from an object
+module.exports.filterObj = (obj, ...allowedFields) => {
+    const newObj = {}
+    Object.keys(obj).forEach(el => {
+        if (allowedFields.includes(el)) newObj[el] = obj[el]
     })
-}
-
-// Returns a status 404 response
-module.exports.resNotFound = (res) => {
-    return res.status(404).json({
-        error: true,
-        message: 'not found'
-    });
-}
-
-// Returns a status 500 response
-module.exports.resInternalError = (res) => {
-   return res.status(500).json({
-       error: true,
-       message: "Sorry, an error occurred"
-   });
-}
-
-// Returns a success response
-module.exports.resSuccess = (res, status, data) => {
-   return res.status(status).json({
-       error: false,
-       message: 'Successful',
-       data
-   });
-}
-
-// Filters out a key and it's value from an object
-module.exports.filterOutObjectKey = (obj, key) => {
-    const entries = Object.entries(obj).filter(([objKey, value]) => (objKey !== key));
-    return Object.fromEntries(entries);
-}
+    return newObj
+};
