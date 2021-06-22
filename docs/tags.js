@@ -11,3 +11,10 @@
  *  name: Users
  *  description: Basic CRUD for users
  */
+
+/**
+ * @swagger
+ * tags:
+ *  name: Vendors
+ *  description: Vendor Operations
+ */

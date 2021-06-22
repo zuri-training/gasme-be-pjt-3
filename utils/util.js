@@ -36,6 +36,14 @@ module.exports.resUnauthorized = (res, message='unauthorized') => {
     })
 }
 
+// Returns a status 404 response
+module.exports.resNotFound = (res) => {
+    return res.status(404).json({
+        error: true,
+        message: 'not found'
+    });
+}
+
 // Returns a status 500 response
 module.exports.resInternalError = (res) => {
    return res.status(500).json({
@@ -51,4 +59,10 @@ module.exports.resSuccess = (res, status, data) => {
        message: 'Successful',
        data
    });
+}
+
+// Filters out a key and it's value from an object
+module.exports.filterOutObjectKey = (obj, key) => {
+    const entries = Object.entries(obj).filter(([objKey, value]) => (objKey !== key));
+    return Object.fromEntries(entries);
 }
