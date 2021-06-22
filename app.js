@@ -2,9 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const userRouter = require('./routes/userRoutes');
+const vendorRouter = require('./routes/vendorRoutes');
 const morgan = require('morgan');
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
+const cookieParser = require('cookie-parser');
 
 const PORT = process.env.PORT;
 
@@ -17,6 +19,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(morgan('dev'));
+app.use(cookieParser());
 
 // swagger js initial config
 const options = {
@@ -43,7 +46,7 @@ const options = {
             }
         ]
     },
-    apis: ["./routes/*.js"]
+    apis: ["./docs/*.js"]
 }
 
 // Generate swagger specifications
@@ -54,6 +57,7 @@ const specs = swaggerJsDoc(options);
 app.use('/auth', authRoutes);
 app.use('/user', userRouter);
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
+app.use('/vendor', vendorRouter);
 app.get('/', (req, res) => {
     return res.status(200).json({message: 'Welcome to Gas & Me'})
 })

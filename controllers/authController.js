@@ -2,13 +2,13 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const {validationResult} = require('express-validator');
 const {
-    createToken,
     resBadRequest,
     resInternalError,
     resSuccess,
     resInvalidRequest,
     resUnauthorized
-} = require('../utils/util');
+} = require('../utils/custom_responses');
+const {createToken} = require('../utils/auth');
 
 
 // Signup user
