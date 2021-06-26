@@ -58,7 +58,7 @@ exports.updateUser = async (req, res) => {
         if (req.file) filteredBody.photo = req.file.filename;
     
         // Update user document
-        const updatedUser = await User.findByIdAndUpdate(req.userId, filteredBody, {
+        const updatedUser = await User.findByIdAndUpdate(req.user._id, filteredBody, {
             new: true,
             runValidators: true
         });
