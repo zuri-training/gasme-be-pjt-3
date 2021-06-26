@@ -20,7 +20,7 @@ module.exports.createVendor = async (req, res) => {
     }
 
     // Check if user already has a vendor object
-        const existingVendor = await Vendor.findOne({userId: req.userId});
+        const existingVendor = await Vendor.findOne({userId: req.user._id});
         if (existingVendor) return resBadRequest(res, "User already has a vendor object");
     
     
@@ -31,7 +31,7 @@ module.exports.createVendor = async (req, res) => {
             longitude: 0,
             latitude: 0
         },
-        userId: req.userId
+        userId: req.user._id
         });
     
         return resSuccess(res, 201, {vendor})
@@ -74,14 +74,39 @@ module.exports.updateVendor = async (req, res) => {
 
     try {
         // Check if logged in user has a vendor object to update
-        const authVendor = await Vendor.findOne({userId: req.userId});
+        const authVendor = await Vendor.findOne({userId: req.user._id});
         if (!authVendor) return resNotFound(res);
 
         // Update the user's vendor object
-        const vendor = await Vendor.findOneAndUpdate({userId: req.userId}, req.body, {new: true});
+        const vendor = await Vendor.findOneAndUpdate({userId: req.user._id}, req.body, {new: true});
         if (!vendor) return resInternalError(res);
         
         return  resSuccess(res, 200, {vendor});
+    } catch (error) {
+        return resInternalError(res);
+    }
+}
+
+
+// Review a vendor
+module.exports.reviewVendor = async (req, res) => {
+    
+    // Validate data
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return resInvalidRequest(res, errors);
+
+    // Destructure request body
+    const {
+        vendorId,
+        rating,
+        body
+    } = req.body;
+
+    try {
+        const review = await Vendor.review(vendorId, req.user, rating, body);
+        if (!review) return resInternalError(res);
+
+        return resSuccess(res, 200, {review});
     } catch (error) {
         return resInternalError(res);
     }

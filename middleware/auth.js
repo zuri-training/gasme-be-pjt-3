@@ -16,7 +16,7 @@ module.exports.requireLogin = async (req, res, next) => {
         // Check if user with decoded ID exists
         const user = await User.findById(verified.id);
         if (!user) return resUnauthorized(res);
-        req.userId = user._id;
+        req.user = user;
 
         next();
     } catch (error) {
