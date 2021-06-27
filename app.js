@@ -60,6 +60,6 @@ app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
 app.use('/vendor', vendorRouter);
 app.get('/', (req, res) => {
     return res.status(200).json({message: 'Welcome to Gas & Me'})
-})
+});
 
 module.exports = app;
