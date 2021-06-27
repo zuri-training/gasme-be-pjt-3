@@ -71,7 +71,7 @@ exports.uploadPhotoToGoogleDrive = async (req, res, next) => {
         })
 
         // Get google drive link of the uploaded photo  
-        const imageUrl = `https://drive.google.com/file/d/${response.data.id}/view?usp=sharing`
+        const imageUrl = `https://drive.google.com/uc?id=${response.data.id}`
         console.log(`Link: ${imageUrl}`)
         console.log('Image link is now sharable!')
 

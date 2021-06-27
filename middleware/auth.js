@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const {
     resUnauthorized
-} = require('../utils/util');
+} = require('../utils/custom_responses');
 const {SECRET} = process.env;
 
 module.exports.requireLogin = async (req, res, next) => {
