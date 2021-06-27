@@ -1,6 +1,6 @@
 const express = require('express')
 const userController = require('../controllers/userController')
-const {requireLogin} = require('../middleware/auth');
+const {requireLogin} = require('../middleware/auth')
 
 const router = express.Router()
 
@@ -10,7 +10,20 @@ router
     .get(userController.getUser)
     .delete(requireLogin, userController.deleteUser)
 
-router.put('/update', requireLogin, userController.updateUser);
+router
+    .patch(
+        '/update',
+        requireLogin,
+        userController.updateUser
+    )
+
+router
+    .patch(
+        '/update/photo',
+        requireLogin,
+        userController.uploadPhoto,
+        userController.uploadPhotoToGoogleDrive,
+    )
 
 
 module.exports = router;
