@@ -84,5 +84,48 @@
  *          500:
  *              description: internal server error
  * 
- *                              
+ * 
+ * 
+ * 
+ * 
+ * /user/update/photo:
+ *  put:
+ *      summary: Update an existing user's profile photo (Login required)
+ *      tags: [Users]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              multipart/form-data:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          photo:
+ *                              type: string
+ *                              format: binary
+ *
+ *                                 
+ * 
+ * 
+ *      responses:
+ *          200:
+ *              description: Returns the user object with the link to the new profile photo
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/User'
+ *          404:
+ *              description: User not found
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              error:
+ *                                  type: boolean
+ *                                  example: true
+ *                              message:
+ *                                  type: string
+ *                                  example: "User not found"
+ *          500:
+ *              description: internal server error                          
  */
