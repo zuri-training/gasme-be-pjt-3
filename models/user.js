@@ -14,6 +14,8 @@ const userSchema = new mongoose.Schema({
         latitude: { type: Number }
     }
 
+}, {
+    timestamps: true
 })
 const User = mongoose.model('user', userSchema)
 module.exports = User

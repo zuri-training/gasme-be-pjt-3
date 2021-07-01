@@ -27,13 +27,40 @@ module.exports.validate = (method) => {
                 .isArray({min: 2, max: 2}).withMessage('volume range should contain just two numbers'),
                 body('volumeRange.*').isNumeric().withMessage('volume has to be numbers'),
                 body('phoneNumber').exists().withMessage('phone number is required').bail()
-                .isInt().withMessage('invalid phone number')
+                .isInt().withMessage('invalid phone number'),
+                body('pricePerKg').exists().withMessage('price per kg is required').bail()
+                .isNumeric().withMessage('price per kg should be a number')
             ]
         case 'reviewVendor':
             return [
                 body('vendorId').exists().withMessage('vendor Id is required'),
-                body('rating').exists().bail().withMessage('rating is required')
+                body('rating').exists().withMessage('rating is required').bail()
                 .isNumeric().withMessage('rating should be a number')
+            ]
+        case 'createOrder':
+            return [
+                body('volume').exists().withMessage('order volume is required').bail()
+                .isNumeric().withMessage('order volume has to be a number'),
+                body('deliveryLocation').exists().withMessage('order delivery location is required'),
+                body('deliveryLocation.printableAddress').exists().withMessage(
+                    'delivery location should have a printable address'
+                ).bail().isString().withMessage('printable address should be a string'),
+                body('deliveryLocation.longitude').exists().withMessage(
+                    'delivery location should have a longitude'
+                ).bail().isNumeric().withMessage('longitude should be a number'),
+                body('deliveryLocation.latitude').exists().withMessage(
+                    'delivery location should have a latitude'
+                ).bail().isNumeric().withMessage('latitude should be a number'),
+                body('vendorId').exists().withMessage('vendor ID is required').bail()
+                .isMongoId().withMessage('vendor ID should be a string'),
+                body('notes').optional().bail().isString().withMessage(
+                    'notes should be a string'
+                )
+            ]
+        case 'acceptOrder':
+            return [
+                body('orderId').exists().withMessage('order ID is required').bail()
+                .isMongoId().withMessage('invalid ID')
             ]
         default:
             return []

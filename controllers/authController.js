@@ -85,6 +85,7 @@ module.exports.login = async (req, res) => {
         // Check if user exists
         const user = await User.findOne({email});
         if (!user) return resUnauthorized(res, 'email not registered');
+        if (!user.active) return resUnauthorized(res, 'email not registered');
 
         // Check if password matches password in database
         const authenticated = await bcrypt.compare(password, user.password);

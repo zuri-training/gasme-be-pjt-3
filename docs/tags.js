@@ -18,3 +18,10 @@
  *  name: Vendors
  *  description: Vendor Operations
  */
+
+/**
+ * @swagger
+ * tags:
+ *  name: Orders
+ *  description: Order Operations
+ */

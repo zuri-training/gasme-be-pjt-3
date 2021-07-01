@@ -15,6 +15,10 @@ const vendorSchema = new mongoose.Schema({
     },
     deliveryEnabled: { type: Boolean, default: false },
     volumeRange: [Number],
+    pricePerKg: {
+        type: Number,
+        required: true
+    },
     location: { 
         printableAddress: String,
         longitude: Number,
@@ -34,6 +38,12 @@ vendorSchema.statics.review = async (vendorId, user, rating=0, reviewBody) => {
     // Fetch vendor object
     const vendor = await Vendor.findById(vendorId);
     if (!vendor) throw Error ('Vendor not found');
+
+    // Check if user is owner of vendor object
+    // Reject if true
+    if (
+        vendor._id.toString() === user.vendorId.toString()
+        ) throw Error ('You cannot rate your own store');
 
     // Check if user has reviewed vendor before
     const review = await Review.findOne({vendorId, userId: user._id});

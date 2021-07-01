@@ -20,8 +20,8 @@ module.exports.createVendor = async (req, res) => {
     }
 
     // Check if user already has a vendor object
-        const existingVendor = await Vendor.findOne({userId: req.user._id});
-        if (existingVendor) return resBadRequest(res, "User already has a vendor object");
+    const existingVendor = await Vendor.findOne({userId: req.user._id});
+    if (existingVendor) return resBadRequest(res, "User already has a vendor object");
     
     
     // Create new vendor
@@ -33,6 +33,11 @@ module.exports.createVendor = async (req, res) => {
         },
         userId: req.user._id
         });
+
+        if (!vendor) return resInternalError(res);
+
+        req.user.vendorId = vendor._id;
+        req.user.save();
     
         return resSuccess(res, 201, {vendor})
     } catch (error) {
