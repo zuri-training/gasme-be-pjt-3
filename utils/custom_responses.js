@@ -32,10 +32,10 @@ module.exports.resNotFound = (res, message="not found") => {
 }
 
 // Returns a status 500 response
-module.exports.resInternalError = (res) => {
+module.exports.resInternalError = (res, message="Sorry, an error occurred") => {
    return res.status(500).json({
        error: true,
-       message: "Sorry, an error occurred"
+       message
    });
 }
 
