@@ -25,3 +25,9 @@
  *  name: Orders
  *  description: Order Operations
  */
+/**
+ * @swagger
+ * tags:
+ *  name: Notifications
+ *  description: Notification Operations
+ */

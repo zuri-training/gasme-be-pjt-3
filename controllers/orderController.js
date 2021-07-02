@@ -9,6 +9,8 @@ const {
 } = require('../utils/custom_responses');
 const {validationResult} = require('express-validator');
 const Vendor = require('../models/vendor');
+const Notification = require('../models/notification');
+const { findByIdAndUpdate } = require('../models/vendor');
 
 
 // Create order
@@ -22,6 +24,8 @@ module.exports.createOrder = async (req, res) => {
 
     // Destructure request body
     const { vendorId, volume } = req.body;
+
+
 
     try {
         // Check if vendor exists
@@ -39,6 +43,20 @@ module.exports.createOrder = async (req, res) => {
         // Create the order
         const order = await Order.create(orderParams);
         if (!order) return resInternalError(res, 'error creating order');
+
+
+        // create notification
+        const notificationParams = {
+            senderId: req.user._id,
+            receiverId: vendorId,
+            orderId: order._id,
+            title: 'New Order',
+            message: `You've got a new order from '${req.user.fullName}' who needs ${volume} kg of liquid gas.`
+        }
+
+        const notification = await Notification.create(notificationParams)
+        if (!notification) return resInternalError(res, 'error creating notification')
+
 
         return resSuccess(res, 201, {order});
 
@@ -123,6 +141,24 @@ const orderStatusPrelim = async (req, res) => {
     return order;
 }
 
+// Vendor Notification template
+const createVendorNotification = async (req, res, order) => {
+
+    const notificationParams = {
+        senderId: req.user.vendorId,
+        receiverId: order.userId,
+        orderId: order._id,
+        title: `Order ${order.status}`,
+        message: `Your order of ${order.volume} kg of liquid gas from '${req.user.fullName}' has been ${order.status}.`
+    }
+
+    // mark vendor notification as seen (true)
+    await Notification.findOneAndUpdate({receiverId: req.user.vendorId, orderId: order._id}, {seen: true}) 
+
+    const notification = await Notification.create(notificationParams)
+    if (!notification) return resInternalError(res, 'error creating notification')
+}
+
 
 // Accept order
 
@@ -137,6 +173,9 @@ module.exports.acceptOrder = async (req, res) => {
         
     order.status = "accepted";
     order.save();
+
+    // create accepted order notification
+    createVendorNotification(req, res, order, req.body.volume)
 
     return resSuccess(res, 200, {order});
 }
@@ -158,6 +197,9 @@ module.exports.rejectOrder = async (req, res) => {
     order.status = "rejected";
     order.save();
 
+    // create rejected order notification
+    createVendorNotification(req, res, order, req.body.volume)
+
     return resSuccess(res, 200, {order})
 }
 
@@ -174,6 +216,9 @@ module.exports.completeOrder = async (req, res) => {
 
     order.status = "completed";
     order.save();
+
+    // create completed order notification
+    createVendorNotification(req, res, order, req.body.volume)
 
     return resSuccess(res, 200, {order})
 }
@@ -194,6 +239,9 @@ module.exports.cancelOrder = async (req, res) => {
 
     order.status = "canceled";
     order.save();
+
+    // create canceled order notification
+    createVendorNotification(req, res, order, req.body.volume)
 
     return resSuccess(res, 200, {order})
 }

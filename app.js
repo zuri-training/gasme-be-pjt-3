@@ -5,9 +5,10 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const userRouter = require('./routes/userRoutes');
 const vendorRouter = require('./routes/vendorRoutes');
+
+const notificationRouter = require('./routes/notificationRoutes');
+
 const orderRouter = require('./routes/orderRoutes');
-
-
 const morgan = require('morgan');
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
@@ -62,6 +63,9 @@ const specs = swaggerJsDoc(options);
 app.use('/auth', authRoutes);
 app.use('/user', userRouter);
 app.use('/vendor', vendorRouter);
+
+app.use('/notification', notificationRouter);
+
 app.use('/order', orderRouter);
 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(specs));
@@ -70,4 +74,4 @@ app.get('/', (req, res) => {
     return res.status(200).json({message: 'Welcome to Gas & Me'})
 });
 
-module.exports = app;
+module.exports = app;   
