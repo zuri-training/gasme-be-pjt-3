@@ -2,7 +2,7 @@
  * @swagger
  * /notification:
  *  get:
- *      summary: Returns an array of all Vendor notifications (for vendors) and Customer notifications(for customers) --- (Login required)
+ *      summary: Returns an array of all Vendor notifications (for vendors) and Customer notifications(for customers) --- [Login required]. Notifications are created by default after every '/order/*' POST or PATCH request
  *      tags: [Notifications]
  *      responses:
  *          200:
