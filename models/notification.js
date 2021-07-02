@@ -14,7 +14,15 @@ const notificationSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'order',
         required: true
-    }
+    },
+    seen: { 
+        // false if the vendor hasn't either accepted or rejected or canceled or completed an the order
+        // and true if the vendor has either accepted or rejected or canceled or completed an the order
+        type: Boolean,
+        default: false
+    }, 
+    title: String,
+    message: String
 }, {
     timestamps: true
 })

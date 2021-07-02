@@ -46,7 +46,7 @@
  *                          type: number
  *                          description: latitude of user's location
  *          example:
- *              id: d5dl_dktje
+ *              id: 60dd5ec6826e8b89c44419a3
  *              email: johndoe@email.com
  *              password: alsdfialef9akd93a9e-fadef-afaerwe
  *              fullName: John Doe

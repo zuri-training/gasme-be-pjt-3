@@ -11,10 +11,10 @@ const {requireLogin} = require('../middleware/auth');
 
 const router = Router();
 
-router.post('/create', requireLogin, validate('createVendor'), createVendor);
+router.post('/create', validate('createVendor'), requireLogin, createVendor);
 router.post('/get', getVendors);
 router.put('/update', requireLogin,  updateVendor);
 router.get('/:id', getVendorById);
-router.post('/review', requireLogin, validate('reviewVendor'), reviewVendor);
+router.post('/review', validate('reviewVendor'), requireLogin, reviewVendor);
 
 module.exports = router;
