@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     imageUrl: { type: String },
     phoneNumber: { type: Number },
     vendorId: { type: mongoose.Schema.Types.ObjectId, ref: 'vendor' },
-    active: { type: Boolean, default: false },
+    active: { type: Boolean, default: true },
     location: {
         printableAddress: { type: String },
         longitude: { type: Number },

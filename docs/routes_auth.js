@@ -76,3 +76,22 @@
  *          500:
  *              description: Internal server error
  */
+
+/**
+ * @swagger
+ * /auth/logout:
+ *  post:
+ *      summary: Logout user
+ *      tags: [Auth]
+ * 
+ *      responses:
+ *          200:
+ *              description: The user was logged out successfully
+ *              content:
+ *                  application/json:
+ *                      $ref: '#/components/schemas/User'
+ *          401:
+ *              description: No user currently logged in
+ *          500:
+ *              description: Internal server error
+ */
