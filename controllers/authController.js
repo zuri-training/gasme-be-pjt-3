@@ -9,6 +9,7 @@ const {
     resUnauthorized
 } = require('../utils/custom_responses');
 const {createToken} = require('../utils/auth');
+const {filterObjDel} = require('../utils/util');
 
 
 // Signup user
@@ -31,17 +32,31 @@ module.exports.signUp = async (req, res) => {
         phoneNumber,
     } = req.body;
 
+    const creationForm = {
+        email, 
+        fullName,
+        phoneNumber
+    }
+
     try {
-        // Check if user already exists
+        // Check if user already exists and is active
         const existingUser = await User.findOne({email});
 
-        if (existingUser) {
+        if (existingUser && existingUser.active) {
             return resBadRequest(res, 'email already registered');
         }
 
-        // Create a new user from data provided
-        const newUser = await new User({email, fullName, phoneNumber});
+        // Create a new user or update existing user from data provided
+        const newUser = existingUser ? (
+            await User.findByIdAndUpdate(existingUser._id, creationForm, {
+                new: true,
+                runValidators: true
+            })
+            ) : (await new User(creationForm));
         if(!newUser) return resInternalError(res);
+
+        // set existing user active to true
+        newUser.active = true;
 
         const salt = await bcrypt.genSalt(10);
         if(!salt) return resInternalError(res);
@@ -60,10 +75,12 @@ module.exports.signUp = async (req, res) => {
         res.cookie('jwt', token, {httpOnly: true, maxAge: 3 * 24 * 3600 * 1000});
 
         // Respond with a success message and the user object
+        delete savedNewUser['_doc']['password']
         resSuccess(res, 201, {user: savedNewUser});
 
     } catch(error) {
-        console.log(error)
+        console.log(error);
+        return resInternalError(res);
     }
     
 }
@@ -100,18 +117,17 @@ module.exports.login = async (req, res) => {
         res.cookie('jwt', token, {httpOnly: true, maxAge: 3 * 24 * 3600 * 1000});
 
         // Respond with a success message and the user object
+        delete user['_doc']['password']
         resSuccess(res, 200, {user});
         
     } catch (error) {
         console.log(error);
+        return resInternalError(res);
     }
   
 }
 
 exports.logout = (req, res) => {
-    res.cookie('jwt', 'loggedout', {
-      expires: new Date(Date.now() + 10 * 1000),
-      httpOnly: true
-    })
+    res.clearCookie('jwt');
     resSuccess(res, 200)
 }

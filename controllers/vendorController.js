@@ -107,8 +107,23 @@ module.exports.reviewVendor = async (req, res) => {
         body
     } = req.body;
 
+    // Check if user is owner of vendor object
+    // Reject if true
+    if (req.user.vendorId) {
+        if (vendorId === req.user.vendorId.toString()) return resBadRequest(
+            res, 'you cannot review your own store'
+        )
+    }
+    
+
+    console.log(vendorId, req.user.vendorId)
+
+    // Fetch vendor object
+    const vendor = await Vendor.findById(vendorId);
+    if (!vendor) return resNotFound(res, 'vendor not found');
+
     try {
-        const review = await Vendor.review(vendorId, req.user, rating, body);
+        const review = await Vendor.review(vendor, req.user, rating, body);
         if (!review) return resInternalError(res);
 
         return resSuccess(res, 200, {review});

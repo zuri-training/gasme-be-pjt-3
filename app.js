@@ -64,7 +64,7 @@ app.use('/auth', authRoutes);
 app.use('/user', userRouter);
 app.use('/vendor', vendorRouter);
 
-app.use('/notification', notificationRouter);
+app.use('/notifications', notificationRouter);
 
 app.use('/order', orderRouter);
 
