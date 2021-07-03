@@ -21,7 +21,7 @@
  *              receiver:
  *                  type: string
  *                  description: auto-generated id of the notification receiver (vendor or consumer)
- *              oderId:
+ *              orderId:
  *                  type: string
  *                  description: auto-generated id of the order
  *              title:

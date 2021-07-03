@@ -9,30 +9,34 @@ const {
     resNotFound,
 } = require('../utils/custom_responses')
 
-module.exports.getAll = async (req, res) => {
-    // console.log("I'm in")
+module.exports.getConsumerNotifications = async (req, res) => {
 
+    try {
+        const notifications = await Notification.find({receiverId: req.user._id});
+        if (!notifications) throw Error ('Failed to get notifications');
+
+        return resSuccess(res, 200, {notifications});
+    } catch (error) {
+        console.log(error);
+        return resInternalError(res);
+    }
+}
+
+
+module.exports.getVendorNotifications = async (req, res) => {
+    
     try {
         // Check if user has a vendor object
         const vendor = await Vendor.findById(req.user.vendorId)
-        
-        if (!vendor) {
-            
-            // for consumer
-            const notifications = await Notification.find({receiverId: req.user.id})
-            if (!notifications) return resNotFound(res)
+        if (!vendor) return resBadRequest(res, 'user is not a vendor');
 
-            return resSuccess(res, 200, {notifications})
-        }
-        
-        // for vendor
-        const notifications = await Notification.find({receiverId: req.user.vendorId})
-        if (!notifications) return resNotFound(res)
+        // Get vendor notifications
+        const notifications = await Notification.find({receiverId: vendor._id});
+        if (!notifications) throw Error('Failed to get notifications');
 
-        return resSuccess(res, 200, {notifications})
-
+        return resSuccess(res, 200, {notifications});
     } catch (error) {
-        return resNotFound(res)
+        console.log(error);
+        return resInternalError(res);
     }
-
 }

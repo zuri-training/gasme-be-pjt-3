@@ -81,7 +81,9 @@ exports.uploadPhotoToGoogleDrive = async (req, res, next) => {
             runValidators: true
         })
         if (!updatedUser) return resNotFound(res, 'User not found')
-        return resSuccess(res, 200, {updatedUser})
+
+        delete updatedUser['_doc']['password']
+        return resSuccess(res, 200, {user: updatedUser})
         
   
       } catch (error) {
@@ -104,7 +106,8 @@ exports.updateUser = async (req, res) => {
         });
         if (!updatedUser) return resNotFound(res, 'User not found');
         
-        return resSuccess(res, 200, {updatedUser});
+        delete updatedUser['_doc']['password']
+        return resSuccess(res, 200, {user: updatedUser});
     } catch (err) {
         return resInternalError(res);
     }
@@ -118,6 +121,7 @@ exports.getUser = async (req, res) => {
 
         if (!doc) return resNotFound(res, 'User not found!')
 
+        delete doc['_doc']['password']
         return resSuccess(res, 200, {user: doc});
     } catch (error) {
         return resInternalError(res);

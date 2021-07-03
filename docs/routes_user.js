@@ -28,7 +28,7 @@
 /**
  * @swagger
  * /user/update:
- *  put:
+ *  patch:
  *      summary: Update an existing user object with any of the following fields (Login required)
  *      tags: [Users]
  *      requestBody:
