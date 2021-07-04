@@ -7,7 +7,9 @@ const {SECRET} = process.env;
 
 module.exports.requireLogin = async (req, res, next) => {
     const token = req.cookies.jwt;
+    console.log("COOKIES", req.cookies);
     console.log("THIS IS THE TOKEN",token)
+    console.log("THE SECRET", SECRET)
     
     // Decode and verify token
     try {
