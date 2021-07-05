@@ -6,7 +6,11 @@ const {
 const {SECRET} = process.env;
 
 module.exports.requireLogin = async (req, res, next) => {
-    const token = req.cookies.jwt;
+    const authorization = req.headers.authorization;
+
+    if (!authorization) return resUnauthorized(res);
+    const token = authorization.split('Bearer ')[1];
+    if (!token) return resUnauthorized(res);
     
     // Decode and verify token
     try {

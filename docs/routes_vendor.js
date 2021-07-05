@@ -270,3 +270,35 @@
  * 
  *                              
  */
+
+/**
+ * @swagger
+ * /vendor/review/get:
+ *  post:
+ *      summary: Return the list of reviews of a vendor
+ *      tags: [Vendors]
+ *      requestBody:
+ *          required: false
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          vendorId:
+ *                              type: string
+ *                              example: 60dd5ec6826e8b89c44419a3
+ *                              description: the ID of the vendor
+ *      responses:
+ *          200:
+ *              description: An array of review objects for a vendor
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/Vendor'
+ *          500:
+ *              description: internal server error
+ * 
+ *                              
+ */

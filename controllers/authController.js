@@ -72,11 +72,12 @@ module.exports.signUp = async (req, res) => {
             );
         if(!token) return resInternalError(res);
 
-        res.cookie('jwt', token, {httpOnly: true, maxAge: 3 * 24 * 3600 * 1000});
-
-        // Respond with a success message and the user object
+        // Respond with a success message, the user object and auth token
         delete savedNewUser['_doc']['password']
-        resSuccess(res, 201, {user: savedNewUser});
+        resSuccess(res, 201, {
+            token,
+            user: savedNewUser
+        });
 
     } catch(error) {
         console.log(error);
@@ -114,11 +115,12 @@ module.exports.login = async (req, res) => {
             );
         if(!token) return resInternalError(res);
 
-        res.cookie('jwt', token, {httpOnly: true, maxAge: 3 * 24 * 3600 * 1000});
-
-        // Respond with a success message and the user object
+        // Respond with a success message, the user object and token
         delete user['_doc']['password']
-        resSuccess(res, 200, {user});
+        resSuccess(res, 200, {
+            token,
+            user
+        });
         
     } catch (error) {
         console.log(error);
