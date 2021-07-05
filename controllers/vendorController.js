@@ -1,4 +1,5 @@
 const Vendor = require('../models/vendor');
+const Review = require('../models/review');
 const {validationResult} = require('express-validator');
 const {
     resBadRequest,
@@ -115,7 +116,6 @@ module.exports.reviewVendor = async (req, res) => {
         )
     }
 
-
     // Fetch vendor object
     const vendor = await Vendor.findById(vendorId);
     if (!vendor) return resNotFound(res, 'vendor not found');
@@ -126,6 +126,29 @@ module.exports.reviewVendor = async (req, res) => {
 
         return resSuccess(res, 200, {review});
     } catch (error) {
+        return resInternalError(res);
+    }
+}
+
+
+// Fetch vendor reviews
+module.exports.fetchReviews = async (req, res) => {
+
+    // Validate data
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return resInvalidRequest(res, errors);
+
+    const {vendorId} = req.body;
+    
+
+    // Check if the vendor exists
+    try {
+        const reviews = await Review.find({vendorId});
+        if (!reviews) return resInternalError(res);
+
+        return resSuccess(res, 200, {reviews});
+    } catch (error) {
+        console.log(error);
         return resInternalError(res);
     }
 }

@@ -40,6 +40,10 @@ module.exports.validate = (method) => {
                     'body should be a string'
                 )
             ]
+            case 'fetchReviews':
+                return [
+                    body('vendorId').exists().withMessage('vendor Id is required')
+                ]
         case 'createOrder':
             return [
                 body('volume').exists().withMessage('order volume is required').bail()
