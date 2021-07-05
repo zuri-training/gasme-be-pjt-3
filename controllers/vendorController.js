@@ -114,9 +114,7 @@ module.exports.reviewVendor = async (req, res) => {
             res, 'you cannot review your own store'
         )
     }
-    
 
-    console.log(vendorId, req.user.vendorId)
 
     // Fetch vendor object
     const vendor = await Vendor.findById(vendorId);
