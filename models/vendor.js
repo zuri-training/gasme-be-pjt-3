@@ -39,20 +39,11 @@ const vendorSchema = new mongoose.Schema({
 // Review method for the vendor schema
 // Adds a review from a user to a vendor
 // Returns the review object
-vendorSchema.statics.review = async (vendorId, user, rating=0, reviewBody) => {
+vendorSchema.statics.review = async (vendor, user, rating=0, reviewBody) => {
 
-    // Fetch vendor object
-    const vendor = await Vendor.findById(vendorId);
-    if (!vendor) throw Error ('Vendor not found');
-
-    // Check if user is owner of vendor object
-    // Reject if true
-    if (
-        vendor._id.toString() === user.vendorId.toString()
-        ) throw Error ('You cannot rate your own store');
 
     // Check if user has reviewed vendor before
-    const review = await Review.findOne({vendorId, userId: user._id});
+    const review = await Review.findOne({vendorId:vendor._id, userId: user._id});
     if (review) {
 
         // Remove user's former rating and add new one

@@ -103,6 +103,10 @@
  *                              type: number
  *                              example: 2349023456789
  *                              description: the business phone number
+ *                          pricePerKg:
+ *                              type: number
+ *                              example: 300
+ *                              description: how much the vendor sells 1kg of gas
  *      responses:
  *          201:
  *              description: Returns the created vendor object
@@ -202,6 +206,97 @@
  *                              message:
  *                                  type: string
  *                                  example: "not found"
+ *          500:
+ *              description: internal server error
+ * 
+ *                              
+ */
+
+
+/**
+ * @swagger
+ * /vendor/review:
+ *  post:
+ *      summary: To review a vendor (Login required)
+ *      tags: [Vendors]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          vendorId:
+ *                              type: string
+ *                              example: 60dd5ec6826e8b89c44419a3
+ *                              description: id of reviewed vendor
+ *                          rating:
+ *                              type: number
+ *                              example: 4.5
+ *                              description: user's rating of vendor
+ *                          body:
+ *                              type: string
+ *                              example: excellent service
+ *                              description: user's review
+ *      responses:
+ *          201:
+ *              description: Returns the created review object
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Review'
+ *          400:
+ *              description: Invalid request
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              error:
+ *                                  type: boolean
+ *                                  example: true
+ *                              message:
+ *                                  type: string
+ *                                  example: Invalid request
+ *                              data: 
+ *                                  type: object
+ *                                  properties:
+ *                                      errors: 
+ *                                          type: array
+ *                                          items:
+ *                                              type: object
+ *          500:
+ *              description: internal server error
+ * 
+ *                              
+ */
+
+/**
+ * @swagger
+ * /vendor/review/get:
+ *  post:
+ *      summary: Return the list of reviews of a vendor
+ *      tags: [Vendors]
+ *      requestBody:
+ *          required: false
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          vendorId:
+ *                              type: string
+ *                              example: 60dd5ec6826e8b89c44419a3
+ *                              description: the ID of the vendor
+ *      responses:
+ *          200:
+ *              description: An array of review objects for a vendor
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/Vendor'
  *          500:
  *              description: internal server error
  * 

@@ -5,7 +5,9 @@ const {
     getVendorById,
     updateVendor,
     reviewVendor,
-    getRadius
+
+    fetchReviews
+
 } = require('../controllers/vendorController')
 const {validate} = require('../middleware/formsAndInput');
 const {requireLogin} = require('../middleware/auth');
@@ -17,5 +19,6 @@ router.post('/get', getVendors);
 router.put('/update', requireLogin,  updateVendor);
 router.get('/:id', getVendorById);
 router.post('/review', validate('reviewVendor'), requireLogin, reviewVendor);
+router.post('/review/get', validate('fetchReviews'), fetchReviews);
 
 module.exports = router;
