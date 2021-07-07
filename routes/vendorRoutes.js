@@ -4,7 +4,8 @@ const {
     getVendors,
     getVendorById,
     updateVendor,
-    reviewVendor
+    reviewVendor,
+    getRadius
 } = require('../controllers/vendorController')
 const {validate} = require('../middleware/formsAndInput');
 const {requireLogin} = require('../middleware/auth');
