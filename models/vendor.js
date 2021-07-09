@@ -21,8 +21,14 @@ const vendorSchema = new mongoose.Schema({
     },
     location: { 
         printableAddress: String,
-        longitude: Number,
-        latitude: Number
+        type: {
+            type: String,
+            enum: ['Point']
+        },
+        coordinates: {
+            type: [Number],
+        }
+        
      },
     rating: { type: Number, default: 0 },
     ratingTotal: { type: Number, default: 0 },
@@ -74,6 +80,8 @@ vendorSchema.statics.review = async (vendor, user, rating=0, reviewBody) => {
         return review;
     }
 }
+
+vendorSchema.index({point:"2dsphere"})
 
 const Vendor = mongoose.model('vendor', vendorSchema)
 module.exports = Vendor;

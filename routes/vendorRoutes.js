@@ -5,7 +5,9 @@ const {
     getVendorById,
     updateVendor,
     reviewVendor,
+
     fetchReviews
+
 } = require('../controllers/vendorController')
 const {validate} = require('../middleware/formsAndInput');
 const {requireLogin} = require('../middleware/auth');
